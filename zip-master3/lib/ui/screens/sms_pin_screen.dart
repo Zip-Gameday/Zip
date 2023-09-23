@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:zip/business/auth.dart';
+import 'package:zip/ui/screens/settings_screen.dart';
 import 'package:zip/ui/widgets/custom_flat_button.dart';
 
 class SmsPinScreen extends StatefulWidget {
@@ -136,6 +137,8 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
           otp: otp,
           onSuccess: () {
             print("Phone number verification added to current account");
+            int count = 0;
+            Navigator.of(context).popUntil((_) => count++ >= 2);
           });
     } else {
       auth.verifyOtpForLogin(
