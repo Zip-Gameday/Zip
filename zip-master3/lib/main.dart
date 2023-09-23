@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 
+//Test
+
 // May the torture begin
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
