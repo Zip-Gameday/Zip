@@ -168,6 +168,17 @@ class _PhoneLogInScreenState extends State<PhoneLoginScreen> {
                         color: Color.fromRGBO(255, 242, 0, 1.0),
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 80),
+                      child: const Text(
+                        "Requires an exisitng account with phone authentication enabled",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.yellowAccent,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 SafeArea(

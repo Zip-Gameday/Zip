@@ -8,6 +8,7 @@ class AddPhoneAuthScreen extends StatefulWidget {
 }
 
 class _AddPhoneAuthScreenState extends State<AddPhoneAuthScreen> {
+  final auth = AuthService();
   final TextEditingController _phoneNumber = new TextEditingController();
 
   Country selectedCountry = Country(
@@ -24,7 +25,6 @@ class _AddPhoneAuthScreenState extends State<AddPhoneAuthScreen> {
   );
 
   VoidCallback onBackPress;
-  final auth = AuthService();
 
   @override
   void initState() {

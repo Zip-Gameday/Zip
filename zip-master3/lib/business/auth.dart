@@ -21,8 +21,6 @@ class AuthService {
   String _uid;
   String get uid => _uid;
 
-  // FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //final Fires
   Stream<auth.User> get user => _auth.authStateChanges();
 
   Future<auth.User> googleSignIn() async {
@@ -161,8 +159,8 @@ class AuthService {
     return result.user.uid;
   }
 
-  Future<auth.User> getCurrentUser() async {
-    auth.User user = await _auth.currentUser;
+  auth.User getCurrentUser() {
+    auth.User user = _auth.currentUser;
     return user;
   }
 
