@@ -10,6 +10,7 @@ class AddPhoneAuthScreen extends StatefulWidget {
 class _AddPhoneAuthScreenState extends State<AddPhoneAuthScreen> {
   final auth = AuthService();
   final TextEditingController _phoneNumber = new TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Country selectedCountry = Country(
     phoneCode: "1",
@@ -39,6 +40,7 @@ class _AddPhoneAuthScreenState extends State<AddPhoneAuthScreen> {
     return WillPopScope(
       onWillPop: onBackPress,
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.black,
         body: Stack(
           children: <Widget>[
@@ -149,8 +151,20 @@ class _AddPhoneAuthScreenState extends State<AddPhoneAuthScreen> {
                                 context,
                                 true);
                           } else {
-                            print(phoneNumber +
-                                " is not registered to any account.");
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                  "Invalid Phone Number",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.yellow,
+                                duration: Duration(seconds: 5),
+                              ),
+                            );
                           }
                         },
                         splashColor: Color.fromRGBO(255, 242, 0, 1.0),

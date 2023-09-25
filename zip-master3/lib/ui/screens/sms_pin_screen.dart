@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pin_put/pin_put.dart';
 import 'package:zip/business/auth.dart';
-import 'package:zip/ui/screens/settings_screen.dart';
 import 'package:zip/ui/widgets/custom_flat_button.dart';
 
 class SmsPinScreen extends StatefulWidget {
@@ -22,6 +21,7 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
 
   String phoneNumber;
   final auth = AuthService();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   String otpCode;
 
@@ -35,6 +35,7 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Center(
@@ -100,7 +101,7 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
                         print("Verification started");
                         verifyOtp(context, otpCode);
                       } else {
-                        //Show error here
+                        showInvalidCodeSnackBar();
                       }
                     },
                   ),
@@ -128,8 +129,23 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
     );
   }
 
-  void verifyOtp(BuildContext context, String otp) {
-    print(widget.isNewUser);
+  void showInvalidCodeSnackBar() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: const Text(
+        "Invalid Code",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 15.0,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      backgroundColor: Colors.yellow,
+      duration: Duration(seconds: 5),
+    ));
+  }
+
+  bool verifyOtp(BuildContext context, String otp) {
     if (widget.isNewUser) {
       auth.verifyOtpForAddingPhoneAuth(
           context: context,
@@ -139,6 +155,7 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
             print("Phone number verification added to current account");
             int count = 0;
             Navigator.of(context).popUntil((_) => count++ >= 2);
+            return true;
           });
     } else {
       auth.verifyOtpForLogin(
@@ -148,7 +165,9 @@ class _SmsPinScreenState extends State<SmsPinScreen> {
           onSuccess: () {
             print("Login success");
             Navigator.of(context).popUntil((route) => route.isFirst);
+            return true;
           });
+      return false;
     }
   }
 }

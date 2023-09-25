@@ -25,6 +25,7 @@ class _PhoneLogInScreenState extends State<PhoneLoginScreen> {
 
   VoidCallback onBackPress;
   final auth = AuthService();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -39,6 +40,7 @@ class _PhoneLogInScreenState extends State<PhoneLoginScreen> {
     return WillPopScope(
       onWillPop: onBackPress,
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.black,
         body: Stack(
           children: <Widget>[
@@ -148,18 +150,21 @@ class _PhoneLogInScreenState extends State<PhoneLoginScreen> {
                                 "+${selectedCountry.phoneCode}$phoneNumber",
                                 context,
                                 false);
-                            /*
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => new SmsPinScreen(
-                                          phoneNumber: phoneNumber,
-                                          isNewUser: false,
-                                        )));
-                                        */
                           } else {
-                            print(phoneNumber +
-                                " is not registered to any account.");
+                            _scaffoldKey.currentState.showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                  "Invalid Phone Number",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                backgroundColor: Colors.yellow,
+                                duration: Duration(seconds: 5),
+                              ),
+                            );
                           }
                         },
                         splashColor: Color.fromRGBO(255, 242, 0, 1.0),

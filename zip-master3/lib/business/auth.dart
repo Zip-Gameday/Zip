@@ -124,7 +124,17 @@ class AuthService {
       await _auth.currentUser.linkWithCredential(credential);
       onSuccess();
     } on auth.FirebaseAuthException catch (e) {
-      print(e.message.toString());
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          e.code,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: 15.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
     }
   }
 
@@ -142,7 +152,7 @@ class AuthService {
       updateUserData(user);
       onSuccess();
     } on auth.FirebaseAuthException catch (e) {
-      print(e.message.toString());
+      print(e.code);
     }
   }
 
