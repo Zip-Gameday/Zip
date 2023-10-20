@@ -55,6 +55,9 @@ const ConfigSection = (props) => {
         firestoreDB.collection("users").doc(user.id).update({"acceptedtc": false,});
       });
     }
+    if (selectedKey = "PriceMuliplier" && parseFloat(textValue) <= 0) {
+      // handle negative or 0 price multiplier here
+    }
   };
 
   return (
