@@ -82,16 +82,16 @@ const stripe = require('stripe')(functions.config().stripe.testkey);
 //   }
 // });
 
-// exports.app = functions.https.onRequest((req, res) => {
-  
-//     // prepend '/' to keep query params if any
-  
+ //exports.app = functions.https.onRequest((req, res) => {
+ // 
+     // prepend '/' to keep query params if any
+//  
 //   return app(req, res)
 // })
 
 // module.exports = {
-//   app
-// }
+   app
+//}
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 
@@ -400,11 +400,6 @@ exports.applyPromoCode = functions.https.onCall(async (data, context) => {
     };
   }
 });
-
-
-
-
-
 
 exports.driverClockIn = functions.https.onCall(async (data, context) => {
   //params
@@ -798,29 +793,26 @@ exports.calculateCost = functions.https.onCall(async (data, context) => {
   var miles = data.miles; 
   var zipXL = data.zipXL //true, false
   var customerRequests = data.customerRequests;
-  // -----------------------------------------------------------------------------------
-  // not sure which variable the admin setting "price multiplier" is supposed to replace
-  // pull from database but not sure where to put it:
+  
   var priceMultiplier = (await admin.firestore().collection("config_settings").doc("admin_settings").get()).get('PriceMultiplier');
 
   // ------------------------------------------------------------------------------------
-  var xlMultiplier =2;
-  var multiplier = 4;
-  var milesMultiplier = miles*0.5;
+  var xlMultiplier = 2;
+  var milesMultiplier = miles * 0.5;
 
   var surgeMultiplier;
-  var cost;
+  var cost = 0;
 
   if(zipXL) {
-    xlMultiplier =3;
+    xlMultiplier = 3;
     if (customerRequests <= 4)  {
-      surgeMultiplier =2;
+      surgeMultiplier = 2;
     }
     else if (customerRequests == 5 )  {
-      surgeMultiplier =4;
+      surgeMultiplier = 4;
     }
     else  {
-      surgeMultiplier = 4 + (0.2 * (customerRequests-5))
+      surgeMultiplier = 4 + (0.2 * (customerRequests - 5))
     }
   }
   else{
@@ -834,8 +826,7 @@ exports.calculateCost = functions.https.onCall(async (data, context) => {
       surgeMultiplier = 4 + (0.2 * (customerRequests - 7));
     }
   }
-  cost = milesMultiplier * multiplier * xlMultiplier * surgeMultiplier;
-
+  cost = milesMultiplier * priceMultiplier * xlMultiplier * surgeMultiplier;
   return{
     cost: cost
   }
