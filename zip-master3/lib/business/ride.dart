@@ -69,7 +69,7 @@ class RideService {
     rideSubscription = rideStream.listen(
         _onRideUpdate); // Listen to changes in ride Document and update service
     int timesSearched = 0;
-    double radius = 1; 
+    double radius = await _retrievePickupRadius(); // Get pickup radius from the admin portal
     isSearchingForRide = true;
     goToNextDriver = false;
 
@@ -170,12 +170,13 @@ class RideService {
     goToNextDriver = false;
   }
 
-  void _retrievePickupRadius() async { 
+  Future<double> _retrievePickupRadius() async { 
     // pickup radius is retrieved from config settings in firestore
     // double check with sponsors as to how the pickup radius should be implemented
     DocumentReference adminSettingsRef = _firestore.collection('config_settings').doc('admin_settings'); 
-    pickupRadius = (await adminSettingsRef.get()).get('PickupRadius').toDouble(); 
+    pickupRadius = double.parse((await adminSettingsRef.get()).get('PickupRadius')); 
     print('Pickup Radius retrieved from admin settings: $pickupRadius'); 
+    return pickupRadius;
   }  
 
   // This method is attached to the ride stream and run every time the ride document in firestore changes.
