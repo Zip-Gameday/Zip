@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:zip/models/driver.dart';
 import 'package:zip/models/request.dart';
 import 'package:zip/models/rides.dart';
+import 'package:zip/ui/widgets/star_rating.dart';
 import 'package:zip/ui/screens/Previous_Driver_Trips.dart';
 import 'dart:io';
 import 'package:zip/ui/screens/main_screen.dart';
@@ -773,7 +774,11 @@ class _DriverMainScreenState extends State<DriverMainScreen> {
                                 ),
                               )),
                         ],
-                      )
+                      ),
+                      StarRating(
+                        rating: driverService.driver.driverRating,
+                        ratingCount: driverService.driver.ratingCount,
+                      ),
                     ]),
                   ));
             } else {
