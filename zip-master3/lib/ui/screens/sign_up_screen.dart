@@ -256,6 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             lastActivity: DateTime.now(),
             pastRides: [],
             pastDrives: [],
+            userRating: 5,
           ));
           onBackPress();
         });
