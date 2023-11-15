@@ -257,6 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             pastRides: [],
             pastDrives: [],
             userRating: 5,
+            ratingCount: 0,
           ));
           onBackPress();
         });

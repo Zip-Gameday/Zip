@@ -15,7 +15,8 @@ class Driver {
   final String currentRideID;
   final daysOfWeek;
   final bool isOnBreak;
-  final int driverRating; // Should be in range [0, 5]
+  int driverRating; // Should be in range [0, 5]
+  int ratingCount;
 
   Driver(
       {this.uid,
@@ -30,7 +31,8 @@ class Driver {
       this.currentRideID,
       this.daysOfWeek,
       this.isOnBreak,
-      this.driverRating});
+      this.driverRating,
+      this.ratingCount});
 
   Map<String, Object> toJson() {
     return {
@@ -46,7 +48,8 @@ class Driver {
       'currentRideID': currentRideID == null ? '' : currentRideID,
       'daysOfWeek': daysOfWeek == null ? [''] : daysOfWeek,
       'isOnBreak': isOnBreak == null ? false : isOnBreak,
-      'driverRating': driverRating == null ? 0 : driverRating
+      'driverRating': driverRating == null ? 0 : driverRating,
+      'ratingCount': ratingCount == null ? 0 : ratingCount,
     };
   }
 
@@ -64,7 +67,8 @@ class Driver {
         currentRideID: doc['currentRideID'],
         daysOfWeek: doc['daysOfWeek'], //daysOfWeekConvert(doc['daysOfWeek']),
         isOnBreak: doc['isOnBreak'],
-        driverRating: doc['driverRating']);
+        driverRating: doc['driverRating'],
+        ratingCount: doc['ratingCount']);
     //totalHoursWorked: doc['totalHoursWorked']);
     return driver;
   }

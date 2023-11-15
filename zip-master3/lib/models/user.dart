@@ -21,6 +21,7 @@ class User {
   var pastDrives;
 
   int userRating;
+  int ratingCount;
 
   User(
       {this.uid,
@@ -38,7 +39,8 @@ class User {
       this.acceptedPrivPolicy,
       this.pastRides,
       this.pastDrives,
-      this.userRating});
+      this.userRating,
+      this.ratingCount});
 
   Map<String, Object> toJson() {
     return {
@@ -58,7 +60,8 @@ class User {
           acceptedPrivPolicy == null ? false : acceptedPrivPolicy,
       'pastRides': pastRides == null ? [] : pastRides,
       'pastDrives': pastDrives == null ? [] : pastDrives,
-      'userRating': userRating == null ? 5 : userRating
+      'userRating': userRating == null ? 5 : userRating,
+      'ratingCount': ratingCount == null ? 0 : ratingCount,
     };
   }
 
@@ -85,7 +88,8 @@ class User {
         pastRides: doc['pastRides'] == null ? [] : doc['pastRides'],
         pastDrives: doc['pastDrives'] == null ? [] : doc['pastDrives'],
         defaultTip: defTip.toDouble(),
-        userRating: doc['userRating']);
+        userRating: doc['userRating'],
+        ratingCount: doc['ratingCount']);
     return user;
   }
 
@@ -111,7 +115,8 @@ class User {
         pastRides: [],
         pastDrives: [],
         defaultTip: 0.0,
-        userRating: 5);
+        userRating: 5,
+        ratingCount: 0);
     return user;
   }
 
