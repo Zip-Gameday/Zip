@@ -1,6 +1,3 @@
-import 'dart:collection';
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import '../utils.dart';
@@ -18,7 +15,7 @@ class Driver {
   final String currentRideID;
   final daysOfWeek;
   final bool isOnBreak;
-
+  final int driverRating; // Should be in range [0, 5]
 
   Driver(
       {this.uid,
@@ -32,8 +29,8 @@ class Driver {
       this.isAvailable,
       this.currentRideID,
       this.daysOfWeek,
-      this.isOnBreak
-      });
+      this.isOnBreak,
+      this.driverRating});
 
   Map<String, Object> toJson() {
     return {
@@ -48,11 +45,11 @@ class Driver {
       'isAvailable': isAvailable == null ? false : isAvailable,
       'currentRideID': currentRideID == null ? '' : currentRideID,
       'daysOfWeek': daysOfWeek == null ? [''] : daysOfWeek,
-      'isOnBreak': isOnBreak == null ? false : isOnBreak
+      'isOnBreak': isOnBreak == null ? false : isOnBreak,
+      'driverRating': driverRating == null ? 0 : driverRating
     };
   }
 
-  
   factory Driver.fromJson(Map<String, Object> doc) {
     Driver driver = new Driver(
         uid: doc['uid'],
@@ -66,8 +63,9 @@ class Driver {
         isAvailable: doc['isAvailable'],
         currentRideID: doc['currentRideID'],
         daysOfWeek: doc['daysOfWeek'], //daysOfWeekConvert(doc['daysOfWeek']),
-        isOnBreak: doc['isOnBreak']);
-        //totalHoursWorked: doc['totalHoursWorked']);
+        isOnBreak: doc['isOnBreak'],
+        driverRating: doc['driverRating']);
+    //totalHoursWorked: doc['totalHoursWorked']);
     return driver;
   }
 
@@ -89,7 +87,7 @@ class Driver {
   //   dayConvert['thursday'] = 4;
   //   dayConvert['friday'] = 5;
   //   dayConvert['saturday'] = 6;
-  
+
   //   for(var i=0;i<workDays.length;i++){
   //       String temp = workDays[i].toLowerCase();
   //       workDays[i] = dayConvert[temp];
@@ -109,48 +107,42 @@ class CurrentShift {
   final DateTime breakEnd;
 
   CurrentShift(
-    {
-      this.shiftStart,
+      {this.shiftStart,
       this.shiftEnd,
       this.startTime,
       this.endTime,
       this.totalBreakTime,
       this.totalShiftTime,
       this.breakStart,
-      this.breakEnd
-    });
-  
+      this.breakEnd});
 
-  Map<String, Object> toJson()  {
+  Map<String, Object> toJson() {
     return {
       'shiftStart': shiftStart == null ? '' : shiftStart,
-      'shiftEnd' : shiftEnd == null ? '': shiftEnd,
-      'startTime' : startTime == null ? '' : startTime,
-      'endTime' : endTime == null ? '' : endTime,
-      'totalBreakTime' : totalBreakTime == null ? '' : totalBreakTime,
-      'totalShiftTime' : totalShiftTime == null ? '' : totalShiftTime,
+      'shiftEnd': shiftEnd == null ? '' : shiftEnd,
+      'startTime': startTime == null ? '' : startTime,
+      'endTime': endTime == null ? '' : endTime,
+      'totalBreakTime': totalBreakTime == null ? '' : totalBreakTime,
+      'totalShiftTime': totalShiftTime == null ? '' : totalShiftTime,
       'breakStart': breakStart == null ? '' : breakStart,
-      'breakEnd' : breakEnd == null ? '': breakEnd,
-      
+      'breakEnd': breakEnd == null ? '' : breakEnd,
     };
   }
 
-  factory CurrentShift.fromJson(Map<String, Object> doc)  {
+  factory CurrentShift.fromJson(Map<String, Object> doc) {
     CurrentShift shift = new CurrentShift(
-      shiftStart: convertStamp(doc['shiftStart']),
-      shiftEnd: convertStamp(doc['shiftEnd']),
-      startTime: convertStamp(doc['startTime']),
-      endTime: convertStamp(doc['endTime']),
-      totalBreakTime: doc['totalBreakTime'],
-      totalShiftTime: doc['totalShiftTime'],
-      breakStart: convertStamp(doc['breakStart']),
-      breakEnd: convertStamp(doc['breakEnd']));
+        shiftStart: convertStamp(doc['shiftStart']),
+        shiftEnd: convertStamp(doc['shiftEnd']),
+        startTime: convertStamp(doc['startTime']),
+        endTime: convertStamp(doc['endTime']),
+        totalBreakTime: doc['totalBreakTime'],
+        totalShiftTime: doc['totalShiftTime'],
+        breakStart: convertStamp(doc['breakStart']),
+        breakEnd: convertStamp(doc['breakEnd']));
     return shift;
   }
 
   factory CurrentShift.fromDocument(DocumentSnapshot doc) {
-      return CurrentShift.fromJson(doc.data());
+    return CurrentShift.fromJson(doc.data());
   }
-  
-
 }

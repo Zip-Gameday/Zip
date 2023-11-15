@@ -20,23 +20,25 @@ class User {
   var pastRides;
   var pastDrives;
 
+  int userRating;
 
   User(
       {this.uid,
-        this.firstName,
-        this.lastName,
-        this.phone,
-        this.email,
-        this.credits,
-        this.homeAddress,
-        this.lastActivity,
-        this.profilePictureURL,
-        this.isDriver,
-        this.defaultTip,
-        this.acceptedtc,
-        this.acceptedPrivPolicy,
-        this.pastRides,
-        this.pastDrives});
+      this.firstName,
+      this.lastName,
+      this.phone,
+      this.email,
+      this.credits,
+      this.homeAddress,
+      this.lastActivity,
+      this.profilePictureURL,
+      this.isDriver,
+      this.defaultTip,
+      this.acceptedtc,
+      this.acceptedPrivPolicy,
+      this.pastRides,
+      this.pastDrives,
+      this.userRating});
 
   Map<String, Object> toJson() {
     return {
@@ -52,9 +54,11 @@ class User {
       'isDriver': isDriver == null ? false : isDriver,
       'defaultTip': defaultTip == null ? 0 : defaultTip,
       'acceptedtc': acceptedtc == null ? false : acceptedtc,
-      'acceptedPrivPolicy': acceptedPrivPolicy == null ? false : acceptedPrivPolicy,
+      'acceptedPrivPolicy':
+          acceptedPrivPolicy == null ? false : acceptedPrivPolicy,
       'pastRides': pastRides == null ? [] : pastRides,
-      'pastDrives': pastDrives == null ? [] : pastDrives
+      'pastDrives': pastDrives == null ? [] : pastDrives,
+      'userRating': userRating == null ? 5 : userRating
     };
   }
 
@@ -72,13 +76,16 @@ class User {
         credits: creds.toDouble(),
         homeAddress: doc['homeAddress'] == null ? '' : doc['homeAddress'],
         profilePictureURL:
-        doc['profilePictureURL'] == null ? '' : doc['profilePictureURL'],
+            doc['profilePictureURL'] == null ? '' : doc['profilePictureURL'],
         isDriver: doc['isDriver'] == null ? false : doc['isDriver'],
         acceptedtc: doc['acceptedtc'] == null ? false : doc['acceptedtc'],
-        acceptedPrivPolicy: doc['acceptedPrivPolicy'] == null ? false : doc['acceptedPrivPolicy'],
+        acceptedPrivPolicy: doc['acceptedPrivPolicy'] == null
+            ? false
+            : doc['acceptedPrivPolicy'],
         pastRides: doc['pastRides'] == null ? [] : doc['pastRides'],
-        pastDrives: doc['pastDrives'] == null ? [] : doc['pastDrives'], 
-        defaultTip: defTip.toDouble());
+        pastDrives: doc['pastDrives'] == null ? [] : doc['pastDrives'],
+        defaultTip: defTip.toDouble(),
+        userRating: doc['userRating']);
     return user;
   }
 
@@ -90,7 +97,7 @@ class User {
             : fuser.displayName,
         lastName: (fuser.displayName.contains(" "))
             ? fuser.displayName.substring(
-            fuser.displayName.indexOf(' ') + 1, fuser.displayName.length)
+                fuser.displayName.indexOf(' ') + 1, fuser.displayName.length)
             : '',
         lastActivity: DateTime.now(),
         phone: fuser.phoneNumber,
@@ -103,7 +110,8 @@ class User {
         acceptedPrivPolicy: false,
         pastRides: [],
         pastDrives: [],
-        defaultTip: 0.0);
+        defaultTip: 0.0,
+        userRating: 5);
     return user;
   }
 
