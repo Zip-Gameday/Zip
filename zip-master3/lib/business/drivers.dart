@@ -84,6 +84,21 @@ class DriverService {
     shiftuid = DateFormat('MMddyyyy').format(DateTime.now());
   }
 
+  // This function was created to add the driver rating field to all existing
+  // driver documents in the database. IT SHOULD NOT be called now
+  // as it will reset them all to 0, but use this as a guide for how to add
+  // new fields in the future as I had a hayday figuring this out the first time.
+  Future<void> addDriverRating() {
+    _firestore.collection("drivers").get().then((querySnapshot) {
+      for (var docSnapshot in querySnapshot.docs) {
+        _firestore
+            .collection("drivers")
+            .doc(docSnapshot.id)
+            .update({"driverRating": 0});
+      }
+    });
+  }
+
   Future<bool> setupService() async {
     await _updateDriverRecord();
     this.driverSub = driverReference
@@ -223,23 +238,29 @@ class DriverService {
     print('Adding ride $rideID to driver list of past drives');
     var rideObj = await _firestore.collection('rides').doc(rideID).get();
     var rideDriver = rideObj.get('drid');
-    
-    var driverPastDrives = (await _firestore.collection('users').doc(rideDriver).get()).get('pastDrives');
+
+    var driverPastDrives =
+        (await _firestore.collection('users').doc(rideDriver).get())
+            .get('pastDrives');
     driverPastDrives.add(driver.currentRideID);
-    await _firestore.collection('users').doc(rideDriver).update({
-      'pastDrives': driverPastDrives
-    });
+    await _firestore
+        .collection('users')
+        .doc(rideDriver)
+        .update({'pastDrives': driverPastDrives});
   }
 
   void _addRideToRider(rideID) async {
     print('Adding ride $rideID to rider list of past rides');
     var rideObj = await _firestore.collection('rides').doc(rideID).get();
     var rideRider = rideObj.get('uid');
-    var riderPastRides = (await _firestore.collection('users').doc(rideRider).get()).get('pastRides');
+    var riderPastRides =
+        (await _firestore.collection('users').doc(rideRider).get())
+            .get('pastRides');
     riderPastRides.add(rideID);
-    await _firestore.collection('users').doc(rideRider).update({
-      'pastRides': riderPastRides
-    });
+    await _firestore
+        .collection('users')
+        .doc(rideRider)
+        .update({'pastRides': riderPastRides});
   }
 
   void cancelRide() async {
