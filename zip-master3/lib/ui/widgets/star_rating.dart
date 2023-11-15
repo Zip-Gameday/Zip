@@ -13,13 +13,16 @@ class StarRating extends StatelessWidget {
 
     for (int i = 0; i < rating; i++) {
       starList
-          .add(Icon(Icons.star_rate_rounded, color: Colors.yellow, size: 15));
+          .add(Icon(Icons.star_rate_rounded, color: Colors.yellow, size: 16));
     }
+    starList.add(Text(
+      "(" + ratingCount.toString() + ")",
+      style: TextStyle(color: Colors.yellow),
+    ));
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: starList,
-    );
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: starList);
   }
 }
